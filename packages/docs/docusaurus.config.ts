@@ -71,7 +71,7 @@ const config: Config = {
       title: 'HopState',
       logo: {
         alt: 'HOPState Logo',
-        src: 'https://pic.rmb.bdstatic.com/activity/2025-3/1743328160790/264586e0f3ed.png',
+        src: 'img/docusaurus.png',
       },
       items: [
         {
