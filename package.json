@@ -1,0 +1,22 @@
+{
+  "name": "hop-state",
+  "version": "0.0.1",
+  "description": "A lightweight and flexible state management framework with an atomic design.",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react": "^19.0.12",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "typescript": "^5.8.2"
+  },
+  "scripts": {
+    "build:doc": "pnpm --filter 'docs' build",
+    "build:core": "pnpm --filter 'hopstate' build"
+  },
+  "overrides": {
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  }
+}
