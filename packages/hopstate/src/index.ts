@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useSyncExternalStore} from 'react';
 import {Middleware, Dispatch} from './types';
 
 /**
@@ -82,7 +82,7 @@ interface SubscriberRecord<S> {
 export class Store<S> {
     private state: S;
     private subscribers: Set<SubscriberRecord<S>> = new Set();
-
+    private finalizer: FinalizationRegistry<SubscriberRecord<S>>;
     // 通过 actions 更新状态（无需 reducer）
     public actions: ActionsType<S>;
 
@@ -96,6 +96,9 @@ export class Store<S> {
         this.actions = actions ? this.bindActions(actions) : ({} as ActionsType<S>);
         this.reducer = reducer;
         this.dispatchFunc = this.baseDispatch();
+        this.finalizer = new FinalizationRegistry(sub => {
+            this.subscribers.delete(sub);
+        });
     }
 
     /**
@@ -188,6 +191,7 @@ export class Store<S> {
             isEqual,
         };
         this.subscribers.add(subscriber);
+        this.finalizer.register(callback, subscriber); // GC hook
         return () => {
             this.subscribers.delete(subscriber);
         };
@@ -210,12 +214,15 @@ export class Store<S> {
         isEqual: (a: T, b: T) => boolean = (a, b) => a === b
     ): T {
         const normSelector = Store.normalizeSelector(selector);
-        const [selected, setSelected] = useState<T>(() => normSelector(this.state));
-        useEffect(() => {
-            const unsubscribe = this.subscribeSelector<T>(normSelector, newSlice => setSelected(newSlice), isEqual);
-            return unsubscribe;
-        }, []);
-        return selected;
+
+        return useSyncExternalStore(
+            /* subscribe：把 React 传进来的 onStoreChange 交给内部订阅系统 */
+            onStoreChange => this.subscribeSelector(normSelector, onStoreChange, isEqual),
+            /* getSnapshot：返回当前 slice；只要引用不变就不会重渲 */
+            () => normSelector(this.state),
+            /* getServerSnapshot：SSR 首屏用；客户端 hydrate 后会被替换 */
+            () => normSelector(this.state)
+        );
     }
 
     /**

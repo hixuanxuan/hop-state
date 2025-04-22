@@ -6,7 +6,9 @@
     "types": "dist/index.d.ts",
     "type": "module",
     "scripts": {
-        "build": "tsc"
+        "build": "tsc --sourceMap false",
+        "test": "jest --runInBand",
+        "test:watch": "jest --watch"
     },
     "keywords": [],
     "author": "",
