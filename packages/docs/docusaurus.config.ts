@@ -89,12 +89,6 @@ const config: Config = {
       style: 'dark',
       links: [
         {
-          title: 'Docs',
-          items: [
-
-          ],
-        },
-        {
           title: 'Community',
           items: [
             {
@@ -115,12 +109,12 @@ const config: Config = {
           title: 'More',
           items: [
             {
-              label: 'Blog',
-              to: '/blog',
+              label: '🍠',
+              href: 'https://www.xiaohongshu.com/user/profile/60fc5381000000000101de8c',
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              href: 'https://github.com/hixuanxuan',
             },
           ],
         },

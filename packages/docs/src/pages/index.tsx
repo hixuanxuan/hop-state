@@ -23,7 +23,7 @@ function HomepageHeader() {
                     </Link>
                     <Link
                         className="button button--primary button--lg ripple"
-                        to="https://github.com/your-gh-account/hopstate"
+                        to="https://github.com/hixuanxuan/hop-state"
                     >
                         GitHub
                     </Link>
